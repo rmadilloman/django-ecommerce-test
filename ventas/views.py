@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Product
+from product.models import Product
 
 def product_list(request):
     """Main sales page - shows products and cart"""
