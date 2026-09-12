@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.http import JsonResponse
 from product.models import Product
+
 
 def product_list(request):
     """Main sales page - shows products and cart"""
     products = Product.objects.all()
     cart = request.session.get('cart', {})
     
-    #Calculate cart total
+    # Calculate cart total
     cart_items = []
     total = 0
     for product_id, quantity in cart.items():
@@ -68,5 +70,47 @@ def process_order(request):
     
     # Clear the cart after "ordering"
     request.session['cart'] = {}
-    messages.success(request, 'Order processed successfully Thank you for your purchase.')
+    messages.success(request, 'Order processed successfully. Thank you for your purchase.')
     return redirect('product_list')
+
+
+
+         #chart data
+
+def sales_chart_data(request):
+    
+    from django.db.models import Sum
+    from django.db.models.functions import TruncMonth
+    from order_manager.models import Order
+
+    # group the orders by month and sum the total
+    sales = (
+        Order.objects
+        .annotate(month=TruncMonth('created_at'))
+        .values('month')
+        .annotate(total=Sum('total'))
+        .order_by('month')
+    )
+
+    labels = []
+    data = []
+
+    for entry in sales:
+        if entry['month']:
+            labels.append(entry['month'].strftime('%B %Y'))
+            data.append(float(entry['total'] or 0))
+
+    # show a message in the chart if it is empty
+    if not labels:
+        labels = ['No sales yet']
+        data = [0]
+
+    return JsonResponse({
+        'labels': labels,
+        'data': data
+    })
+
+
+def sales_chart_page(request):
+    #renders the html with the chart
+    return render(request, 'ventas/sales_chart.html')
