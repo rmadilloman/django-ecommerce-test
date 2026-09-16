@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.http import JsonResponse
 from product.models import Product
 
+from .forms import UserRegisterForm
+
 
 def product_list(request):
     """Main sales page - shows products and cart"""
@@ -114,3 +116,18 @@ def sales_chart_data(request):
 def sales_chart_page(request):
     #renders the html with the chart
     return render(request, 'ventas/sales_chart.html')
+
+
+  #register form
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}, logged in.')
+            return redirect('product_list')
+    else:
+        form = UserRegisterForm()
+    
+    return render(request, 'ventas/register.html', {'form': form})

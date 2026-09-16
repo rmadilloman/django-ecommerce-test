@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; }
+        label { display: block; margin-top: 15px; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; cursor: pointer; }
+    </style>
+    <!-- Using inline CSS as its very simple for now-->
+</head>
+<body>
+    <h1>Create an Account</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+
+    <p style="margin-top: 20px;">
+        <a href="{% url 'product_list' %}">Back to Products</a>
+    </p>
+</body>
+</html>
