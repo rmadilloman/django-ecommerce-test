@@ -1,0 +1,19 @@
+<!-- just for "Include" test purposes so far-->
+<tr>
+    <td style="border: 1px solid #ccc; padding: 10px;">
+        {{ product.name|title }}
+        {% if forloop.counter|divisibleby:2 %}
+            <br><small style="color: rgb(107, 197, 107);">Even (#{{ forloop.counter }})</small>
+        {% else %}
+            <br><small style="color: rgb(109, 109, 155);">Odd (#{{ forloop.counter }})</small>
+        {% endif %}
+    </td>
+    <td style="border: 1px solid #ccc; padding: 10px;">${{ product.price|floatformat:2 }}</td>
+    <td style="border: 1px solid #ccc; padding: 10px;">{{ product.stock }}</td>
+    <td style="border: 1px solid #ccc; padding: 10px;">
+        <a href="{% url 'add_to_cart' product.id %}" 
+           style="padding: 6px 12px; background: #008200; color: rgb(255,255,255); text-decoration: none; border-radius: 4px;">
+           Add to Cart
+        </a>
+    </td>
+</tr>

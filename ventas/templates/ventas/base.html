@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}E-commerce{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: rgb(221, 221, 221);
+        }
+        nav {
+            background-color: #343a40;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        nav a {
+            color: rgb(255, 255,255);
+            margin-right: 20px;
+            text-decoration: none;
+        }
+        .container {
+            background-color:rgb(255, 255,255);
+            padding: 25px;
+            border-radius: 8px;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <nav>
+        <a href="{% url 'product_list' %}">Products</a>
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'sales_chart_page' %}">Sales Chart</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>
