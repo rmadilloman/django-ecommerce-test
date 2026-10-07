@@ -2,10 +2,12 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Product
 from .serializers import ProductSerializer
+from .pagination import ProductPagination
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    pagination_class = ProductPagination
 
     def list(self, request, *args, **kwargs):
         print("you called the GET method for all products!!!")
