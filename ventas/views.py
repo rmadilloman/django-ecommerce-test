@@ -3,7 +3,27 @@ from django.contrib import messages
 from django.http import JsonResponse
 from product.models import Product
 
+# auth related
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from .serializers import UserProfileSerializer
+
 from .forms import UserRegisterForm
+
+
+# auth
+class UserProfileView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        #Only to show the profile of the user that is logged in
+        serializer = UserProfileSerializer(request.user)
+        return Response(serializer.data)
+
+
 
 
 def product_list(request):

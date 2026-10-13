@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Authentication</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; }
+        input, button { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 6px; white-space: pre-wrap; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Test User Profile Authentication</h1>
+
+    <label>Token:</label>
+    <input type="text" id="token" placeholder="Paste your token here">
+
+    <button onclick="testProfile()">Test Profile Endpoint</button>
+
+    <h3>Result:</h3>
+    <pre id="result">Click the button to test</pre>
+
+    <script>
+        async function testProfile() {
+            const token = document.getElementById('token').value.trim();
+            const resultBox = document.getElementById('result');
+
+            if (!token) {
+                resultBox.innerHTML = '<span class="error">Please paste a token first.</span>';
+                return;
+            }
+
+            try {
+                const response = await fetch('/ventas/profile/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Token ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultBox.innerHTML = `<span class="success">Success! Status: ${response.status}</span>\n\n` + 
+                                          JSON.stringify(data, null, 4);
+                } else {
+                    resultBox.innerHTML = `<span class="error">Error ${response.status}</span>\n\n` + 
+                                          JSON.stringify(data, null, 4);
+                }
+            } catch (error) {
+                resultBox.innerHTML = `<span class="error">Request failed:</span>\n${error}`;
+            }
+        }
+    </script>
+</body>
+</html>
